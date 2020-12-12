@@ -12,6 +12,7 @@ public class Vertex {
     public int nbArcBleuSortantVersRouge;
     public int nbArcBleuSortantVersBleu;
     public int nbArcRougeSortantVersBleu;
+    public int nbArcRougeSortantVersRouge;
     public int ratio;
     public int nbArcRougeSortant;
 
@@ -35,6 +36,16 @@ public class Vertex {
         ratio = this.nbArcRougeSortantVersBleu - this.nbArcBleuSortantVersRouge;
     }
 
+    public void calculateRatioV2(){
+        this.nbArcBleuSortantVersRouge();
+        this.nbArcRougeSortantVersBleu();
+        this.nbArcBleuSortantVersBleu();
+        this.nbArcRougeSortantVersRouge();
+
+        ratio = ((this.nbArcRougeSortantVersBleu*1000) + this.nbArcBleuSortantVersBleu)
+                - ((this.nbArcBleuSortantVersRouge*1000) + this.nbArcRougeSortantVersRouge);
+    }
+
     public void nbArcBleuSortantVersRouge(){
         nbArcBleuSortantVersRouge = 0;
         for(Vertex vertex : trafficNeighbors.keySet()){
@@ -52,6 +63,17 @@ public class Vertex {
             if(trafficNeighbors.get(vertex).getColor() == ColorG.COLOR.RED){
                 if(vertex.getColor() == ColorG.COLOR.BLUE){
                     nbArcRougeSortantVersBleu++;
+                }
+            }
+        }
+    }
+
+    public void nbArcRougeSortantVersRouge(){
+        nbArcRougeSortantVersRouge = 0;
+        for(Vertex vertex : trafficNeighbors.keySet()){
+            if(trafficNeighbors.get(vertex).getColor() == ColorG.COLOR.RED){
+                if(vertex.getColor() == ColorG.COLOR.RED){
+                    nbArcRougeSortantVersRouge++;
                 }
             }
         }
