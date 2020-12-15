@@ -1,4 +1,4 @@
-
+import java.util.Objects;
 
 public class TrafficNeighbor {
 
@@ -17,5 +17,20 @@ public class TrafficNeighbor {
 
     public Edge getEdge(){
         return edge;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TrafficNeighbor that = (TrafficNeighbor) o;
+        return v.equals(that.v) &&
+                edge.equals(that.edge);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(v, edge);
     }
 }

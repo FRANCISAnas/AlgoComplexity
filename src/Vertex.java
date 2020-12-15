@@ -132,7 +132,7 @@ public class Vertex {
     }
 
     public int nbArcSortant() {
-        return 0;
+        return trafficNeighbors.size();
     }
 
     @Override
