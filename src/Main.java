@@ -151,7 +151,8 @@ public class Main {
                     if(neig[i]>=0) {
                         vertex.addNeighbor(vertices.get(neig[i]));
                         edges[vertex.getId()][neig[i]] = new Edge(colors[i]);
-                        vertex.trafficNeighbors.put( vertices.get(neig[i]),edges[vertex.getId()][neig[i]]);
+                        TrafficNeighbor trafficNeighbor =  new TrafficNeighbor(vertices.get(neig[i]), edges[vertex.getId()][neig[i]]);
+                        vertex.trafficNeighbors.add( trafficNeighbor);
                     }
                 }
             }
