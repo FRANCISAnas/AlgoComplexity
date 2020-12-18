@@ -102,10 +102,6 @@ public class Vertex {
         }
     }
 
-    public void setNeighbors(List<Vertex> neighbors) {
-        this.neighbors = neighbors;
-    }
-
     public void addNeighbor(Vertex vertex) {
         this.neighbors.add(vertex);
     }

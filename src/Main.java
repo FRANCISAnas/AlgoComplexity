@@ -11,42 +11,28 @@ import java.util.List;
 
 public class Main {
 
+    /** Variables modifiées/utilisées par l'affichage : (valeurs par défaut ici) **/
     public static String fileName = null;
     public static Strategy strategy = null;
     public static double pCEdge = 0.5;
     public static double pCVertex = 0.5;
     public static double pEdge = 0.1;
     public static int nbVertices = 10;
+    public static Graph.GrapheType randomGraphType = Graph.GrapheType.NORMAL;
 
 
     public static void main(String[] args) throws IOException {
         Graph graph;
         if(args.length > 0) {
             fileName = args[0];
-            /*if(args.length > 1) {
-                try {
-                    strategy = selectStrategy(Integer.parseInt(args[1]));
-                }catch (Exception e){
-                    System.out.println("Mauvais numéro de stratégie");
-                    return;
-                }
-            }*/
         }
-        //if(strategy == null)
         strategy = new Strategy0();
         graph = initGraph(fileName);
         if(graph == null){
             System.out.println("Attention il y a eu une erreur");
             return;
         }
-        //System.out.println(graph);
-        //System.out.println("Nombre de sommets restants en moyenne : "+ Tests.runTests(100,strategy));
         run(graph, strategy);
-        //deleteAuto(graph);
-
-        /*int[] deletions = {2,7,4,1,5,6,0};
-        deletions(deletions,graph);
-        System.out.println("Il reste "+graph.getVertices().size() + " sommets");*/
     }
 
 
@@ -169,7 +155,7 @@ public class Main {
 
     public static void run(Graph g, Strategy s){
         EventQueue.invokeLater(() -> {
-            JFrame f = new JFrame("GraphPanel");
+            JFrame f = new JFrame("Simulation Projet2 Algo");
             f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             GraphPanel gp = new GraphPanel();
             gp.init(f, g, s);

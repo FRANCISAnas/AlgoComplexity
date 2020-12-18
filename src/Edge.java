@@ -8,10 +8,6 @@ public class Edge {
         this.color = color;
     }
 
-    public void setColor(ColorG.COLOR color) {
-        this.color = color;
-    }
-
     public ColorG.COLOR getColor() {
         return color;
     }

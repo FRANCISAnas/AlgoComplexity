@@ -95,4 +95,10 @@ public class Graph {
         }
         return stringBuilder.toString();
     }
+
+    public enum GrapheType{
+        NORMAL,
+        COMPLET,
+        BIVERTEX
+    }
 }

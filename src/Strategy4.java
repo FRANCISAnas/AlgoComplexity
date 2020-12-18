@@ -1,21 +1,29 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class Strategy4 implements Strategy {
 
+    private List<Vertex> deletions = null;
+    private Graph g = null;
     @Override
     public void init(Graph graph) {
-
     }
 
     @Override
     public Vertex getNextVertexToDelete(Graph graph) {
-
         return null;
+        /*if(deletions==null){
+            g = graph.getCopy();
+            deletions = question3Algorithme(g);
+        }
+        if(deletions.isEmpty())return null;
+        return deletions.remove(0);*/
     }
 
 
 
-    public void question3Algorithme(Graph graph) {
+    public List<Vertex> question3Algorithme(Graph graph) {
+        List<Vertex> deletions = new ArrayList<>();
         List<Vertex> redVertex = Utility.getRedVertex(graph);
         while (atLeasOnLinkedVertex(redVertex)) { // s'il y a au moins un sommet rouge avec des arc entant/sortant, on continue
             boolean atLeastOneCaseStillValid = false;
@@ -23,28 +31,29 @@ public class Strategy4 implements Strategy {
                 if (v.nbArcSortant() == 0){
                     atLeastOneCaseStillValid = true;
                     graph.deleteVertex(v.getId());
+                    deletions.add(v);
                 }
             }
             for (Vertex v : redVertex) { // supprimer tous les rouge avec 1 arc sortant bleu vers sommet bleu (il a uniquement un arc sortant)
                 if (v.nbArcSortant() == 1 && v.nbArcBleuSortantVersBleu == 1) { // conditions nécessaires suffisantes
                     atLeastOneCaseStillValid = true;
                     graph.deleteVertex(v.getId());
+                    deletions.add(v);
                 }
             }
             for (Vertex v : redVertex) {
                 if (v.nbArcRougeSortant > 0) { // supprimer 1 seul rouge avec 1 ou 2 arcs rouge partant vers n'importe quelle vertex
                     atLeastOneCaseStillValid = true;
                     graph.deleteVertex(v.getId());
+                    deletions.add(v);
                     break;
                 }
             }
             if(!atLeastOneCaseStillValid) break; // nécessaire, sinon boucle infinie !
         }
-        deleteAllRedVertices(graph); // peut-être pas nécessaire à cause la ligne 21 :-/
+        //deleteAllRedVertices(graph); // peut-être pas nécessaire à cause la ligne 21 :-/
+        return deletions;
     }
-
-
-
 
     private boolean atLeasOnLinkedVertex(List<Vertex> redVertex) {
         for (Vertex v : redVertex) {

@@ -13,16 +13,6 @@ public class Utility {
         return null;
     }
 
-    public static List<Vertex> getVertex(List<TrafficNeighbor> trafficNeighbors){
-        List<Vertex> toRet = new ArrayList<>();
-        for(TrafficNeighbor t: trafficNeighbors){
-            toRet.add(t.getVertex());
-        }
-        return toRet;
-    }
-
-
-
     public static List<Vertex> getRedVertex(Graph graph){
         List<Vertex> redVertex = new ArrayList<>();
         for (Vertex cuSomm : graph.getVertices()){

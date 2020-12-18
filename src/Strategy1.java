@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Strategy1 implements Strategy {
+    /** Amélioration de la Strat0 dans des cas particuliers d'égalité**/
 
     @Override
     public void init(Graph graph) {}

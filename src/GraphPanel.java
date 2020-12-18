@@ -10,7 +10,7 @@ import javax.swing.event.*;
 
 /**
  * @author John B. Matthews; distribution per GPL.
- * @author lucas Dominguez; reprise du code et adaptation au sujet
+ * @author lucas Dominguez; reprise du code de stackOverflow et adaptation au sujet
  */
 public class GraphPanel extends JComponent {
 
@@ -22,10 +22,9 @@ public class GraphPanel extends JComponent {
     private ControlPanel control = new ControlPanel();
     private int radius = RADIUS;
     private Kind kind = Kind.Circular;
-    private List<NodeDraw> nodeDraws = new ArrayList<NodeDraw>();
+    private List<NodeDraw> nodeDraws = new ArrayList<>();
     private List<NodeDraw> positionSave = new ArrayList<>();
-    private List<NodeDraw> selected = new ArrayList<NodeDraw>();
-    private List<EdgeDraw> edgeDraws = new ArrayList<EdgeDraw>();
+    private List<EdgeDraw> edgeDraws = new ArrayList<>();
     private Point mousePt = new Point(WIDE / 2, HIGH / 2);
     private Rectangle mouseRect = new Rectangle();
     private boolean selecting = false;
@@ -135,16 +134,15 @@ public class GraphPanel extends JComponent {
         private Action newNode = new NewNodeAction("New" );
         private Action clearAll = new ClearAction("Clear",this);
         private Action init = new InitAction("Init prebuiltGraph", this);
-        //private Action kind = new KindComboAction("Change the shape");
         private Action changeStrat = new ChangeStratAction("Change the strategy");
-        //private Action color = new ColorAction("Color");
+        private Action changeRandomType = new ChangeRandomTypeAction("Change random Type");
         private Action deleteAll = new DeleteAllAction("DeleteAll",this);
         private Action delete = new DeleteAction("Delete Red",this);
-        private Action random = new RandomAction("Create a random Graph", this);
+        private Action random = new RandomAction("Random", this);
         private Action tests = new TestsAction("Run Tests", this);
         private JButton defaultButton = new JButton(newNode);
-        //private JComboBox kindCombo = new JComboBox();
         private JComboBox stratCombo = new JComboBox();
+        private JComboBox randomTypeCombo = new JComboBox();
         private ColorIcon hueIcon = new ColorIcon(Color.blue);
         private JPopupMenu popup = new JPopupMenu();
         private JLabel labelTest;
@@ -154,10 +152,9 @@ public class GraphPanel extends JComponent {
             this.setLayout(new FlowLayout(FlowLayout.LEFT));
             this.setBackground(Color.lightGray);
 
-            //this.add(defaultButton);
             this.add(new JButton(init));
             this.add(new JButton(clearAll));
-            //this.add(kindCombo);
+            this.add(new JLabel("Strat:"));
             this.add(stratCombo);
             this.add(new JButton(deleteAll));
             this.add(new JLabel("Delay:"));
@@ -173,7 +170,6 @@ public class GraphPanel extends JComponent {
                 }
             });
             this.add(js5);
-            //this.add(new JLabel(hueIcon));
             JSpinner js = new JSpinner();
             js.setModel(new SpinnerNumberModel(Math.abs(Main.pEdge*100), 0, 100, 5));
             js.addChangeListener(new ChangeListener() {
@@ -185,7 +181,7 @@ public class GraphPanel extends JComponent {
                     GraphPanel.this.repaint();
                 }
             });
-            this.add(new JLabel("Number of vertices : "));
+            this.add(new JLabel("Nb vertices : "));
             JSpinner js0 = new JSpinner();
             js0.setModel(new SpinnerNumberModel(Main.nbVertices, 0, 100, 5));
             js0.addChangeListener(new ChangeListener() {
@@ -200,7 +196,7 @@ public class GraphPanel extends JComponent {
             this.add(js0);
             this.add(new JLabel("% of an edge :"));
             this.add(js);
-            this.add(new JLabel("% vertex being red : "));
+            this.add(new JLabel("% vertex red : "));
             JSpinner js2 = new JSpinner();
             js2.setModel(new SpinnerNumberModel(Math.abs(Main.pCVertex*100), 0, 100, 5));
             js2.addChangeListener(new ChangeListener() {
@@ -213,7 +209,7 @@ public class GraphPanel extends JComponent {
                 }
             });
             this.add(js2);
-            this.add(new JLabel("% edge being blue : "));
+            this.add(new JLabel("% edge blue : "));
             JSpinner js3 = new JSpinner();
             js3.setModel(new SpinnerNumberModel(Math.abs(Main.pCEdge*100), 0, 100, 5));
             js3.addChangeListener(new ChangeListener() {
@@ -226,8 +222,9 @@ public class GraphPanel extends JComponent {
                 }
             });
             this.add(js3);
+            this.add(new JLabel("RandomGrapheType:"));
+            this.add(randomTypeCombo);
             this.add(new JButton(random));
-            //this.add(new JLabel("Nb de tests:"));
             JSpinner js6 = new JSpinner();
             js6.setModel(new SpinnerNumberModel(GraphPanel.nbtests, 32, 10000, GraphPanel.nbtests));
             js6.addChangeListener(new ChangeListener() {
@@ -238,44 +235,23 @@ public class GraphPanel extends JComponent {
                     GraphPanel.nbtests = (Integer) s.getValue();
                 }
             });
-            //this.add(js6);
             this.add(tests);
             labelTest = new JLabel("%Restant");
-            //labelTest.setVisible(false);
-            //this.add(labelTest);
-            //popup.add(new JMenuItem(newNode));
-            //popup.add(new JMenuItem(color));
             popup.add(new JMenuItem(delete));
-            JMenu subMenu = new JMenu("Kind");
-            /*for (Kind k : Kind.values()) {
-                kindCombo.addItem(k);
-                subMenu.add(new JMenuItem(new KindItemAction(k)));
-            }*/
             Strategy[] s =Main.getAllStrats();
             for (int i=0;i<s.length;i++) {
                 if(s[i]!=null) {
                     stratCombo.addItem(i);
                 }
             }
-            //popup.add(subMenu);
             stratCombo.addActionListener(changeStrat);
+            for (Graph.GrapheType type : Graph.GrapheType.class.getEnumConstants()){
+                randomTypeCombo.addItem(type.toString());
+            }
+            randomTypeCombo.addActionListener(changeRandomType);
         }
 
 
-        class KindItemAction extends AbstractAction {
-
-            private Kind k;
-
-            public KindItemAction(Kind k) {
-                super(k.toString());
-                this.k = k;
-            }
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //kindCombo.setSelectedItem(k);
-            }
-        }
     }
     private class ClearAction extends AbstractAction {
         ControlPanel controlPanel;
@@ -290,25 +266,6 @@ public class GraphPanel extends JComponent {
             Timer t = ((DeleteAllAction)this.controlPanel.deleteAll).timer;
             if(t!=null)t.stop();
             repaint();
-        }
-    }
-
-    private class ColorAction extends AbstractAction {
-
-        public ColorAction(String name) {
-            super(name);
-        }
-
-        public void actionPerformed(ActionEvent e) {
-            Color color = control.hueIcon.getColor();
-            color = JColorChooser.showDialog(
-                GraphPanel.this, "Choose a color", color);
-            if (color != null) {
-                NodeDraw.updateColor(nodeDraws, color);
-                control.hueIcon.setColor(color);
-                control.repaint();
-                repaint();
-            }
         }
     }
 
@@ -339,7 +296,7 @@ public class GraphPanel extends JComponent {
             }
             @Override
             public void actionPerformed(ActionEvent e) {
-                Vertex toDelete = strategy.getNextVertexToDelete(graph);//Main.getSommetToDelete(graph);
+                Vertex toDelete = strategy.getNextVertexToDelete(graph);
                 if(toDelete ==null){
                     if(random)return;
                     try {
@@ -386,20 +343,6 @@ public class GraphPanel extends JComponent {
 
     }
 
-    private class KindComboAction extends AbstractAction {
-
-        public KindComboAction(String name) {
-            super(name);
-        }
-
-        public void actionPerformed(ActionEvent e) {
-            JComboBox combo = (JComboBox) e.getSource();
-            kind = (Kind) combo.getSelectedItem();
-            NodeDraw.updateKind(nodeDraws, kind);
-            repaint();
-        }
-    }
-
     private class ChangeStratAction extends AbstractAction {
 
         public ChangeStratAction(String name) {
@@ -411,6 +354,25 @@ public class GraphPanel extends JComponent {
             int i  = (Integer) combo.getSelectedItem();
             try {
                 strategy = Main.getAllStrats()[i];
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            repaint();
+        }
+    }
+
+
+    private class ChangeRandomTypeAction extends AbstractAction {
+
+        public ChangeRandomTypeAction(String name) {
+            super(name);
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            JComboBox combo = (JComboBox) e.getSource();
+            String type  = (String) combo.getSelectedItem();
+            try {
+                Main.randomGraphType = Graph.GrapheType.valueOf(type);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -445,8 +407,12 @@ public class GraphPanel extends JComponent {
 
         public void actionPerformed(ActionEvent e) {
             this.controlPanel.clearAll.actionPerformed(null);
-            graph = Main.createRandomGraph(Main.pCVertex,Main.pCEdge,Main.pEdge,Main.nbVertices,-1);
-            //graph = Main.createBiArete(Main.pCVertex,Main.pCEdge,Main.nbVertices);
+            if(Main.randomGraphType == Graph.GrapheType.NORMAL)
+                graph = Main.createRandomGraph(Main.pCVertex,Main.pCEdge,Main.pEdge,Main.nbVertices,-1);
+            else if(Main.randomGraphType == Graph.GrapheType.COMPLET)
+                graph = Main.createRandomCompleteGraph(Main.pCVertex, Main.pCEdge, Main.nbVertices);
+            else if(Main.randomGraphType == Graph.GrapheType.BIVERTEX)
+                graph = Main.createBiArete(Main.pCVertex,Main.pCEdge,Main.nbVertices);
             this.controlPanel.init.actionPerformed(null);
         }
     }
@@ -465,8 +431,6 @@ public class GraphPanel extends JComponent {
             for(int i = 0;i<=10;i++){
                 System.out.println("p= "+i/10.+" : " + Arrays.toString(n[i]));
             }
-            //this.controlPanel.labelTest.setVisible(true);
-            //this.controlPanel.labelTest.setText(String.valueOf(Math.round(n*100)/100.));
         }
     }
 
@@ -554,6 +518,7 @@ public class GraphPanel extends JComponent {
                 repaint();
                 return;
             }
+            assert graph != null;
             initGraphAction(graph);
 
             for (int i = 0; i < vertices.size(); i++) {
@@ -582,7 +547,7 @@ public class GraphPanel extends JComponent {
      */
     private enum Kind {
 
-        Circular, Rounded, Square;
+        Circular, Rounded, Square
     }
 
     /**
@@ -691,18 +656,6 @@ public class GraphPanel extends JComponent {
         }
 
         /**
-         * Collected all the selected nodes in list.
-         */
-        public static void getSelected(List<NodeDraw> list, List<NodeDraw> selected) {
-            selected.clear();
-            for (NodeDraw n : list) {
-                if (n.isSelected()) {
-                    selected.add(n);
-                }
-            }
-        }
-
-        /**
          * Select no nodes.
          */
         public static void selectNone(List<NodeDraw> list) {
@@ -759,40 +712,6 @@ public class GraphPanel extends JComponent {
                 }
             }
         }
-
-        /**
-         * Update each node's radius r.
-         */
-        public static void updateRadius(List<NodeDraw> list, int r) {
-            for (NodeDraw n : list) {
-                if (n.isSelected()) {
-                    n.r = r;
-                    n.setBoundary(n.b);
-                }
-            }
-        }
-
-        /**
-         * Update each node's color.
-         */
-        public static void updateColor(List<NodeDraw> list, Color color) {
-            for (NodeDraw n : list) {
-                if (n.isSelected()) {
-                    n.color = color;
-                }
-            }
-        }
-
-        /**
-         * Update each node's kind.
-         */
-        public static void updateKind(List<NodeDraw> list, Kind kind) {
-            for (NodeDraw n : list) {
-                if (n.isSelected()) {
-                    n.kind = kind;
-                }
-            }
-        }
     }
 
     private static class ColorIcon implements Icon {
@@ -807,10 +726,6 @@ public class GraphPanel extends JComponent {
 
         public Color getColor() {
             return color;
-        }
-
-        public void setColor(Color color) {
-            this.color = color;
         }
 
         public void paintIcon(Component c, Graphics g, int x, int y) {
