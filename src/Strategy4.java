@@ -21,7 +21,13 @@ public class Strategy4 implements Strategy {
     }
 
 
-
+    /**
+     * @author Anas & Lucas
+     * Created : 18/12/2020
+     * @param graph
+     * Pré-condition : un graph bi vertex (i.e chaque sommet du a au plus 2 arrêtes et au moins 1 arrête)
+     * Complexité : polynomiale de l'ordre O(n^3)
+     * */
     public List<Vertex> question3Algorithme(Graph graph) {
         List<Vertex> deletions = new ArrayList<>();
         List<Vertex> redVertex = Utility.getRedVertex(graph);
