@@ -11,13 +11,27 @@ public class Strategy4 implements Strategy {
 
     @Override
     public Vertex getNextVertexToDelete(Graph graph) {
-        return null;
-        /*if(deletions==null){
-            g = graph.getCopy();
-            deletions = question3Algorithme(g);
+        List<Vertex> redVertex = Utility.getRedVertex(graph);
+        // On itère pour chaque sommet rouges de la liste des sommets rouge du graph
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        System.out.println("itération sur toutes les vertexs rouge");
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        for (Vertex currentRed : redVertex){
+            // On calcul le nombre d'arc bleu sortant vers un sommet rouge
+            // du sommet rouge (currentRed) que l'on traite actuellement
+            currentRed.nbArcBleuSortantVersRouge();
+            // Si le sommet rouge (currentRed) que l'on traite actuellement
+            // n'a aucun arc bleu sortant vers un sommet rouge...
+            System.out.println("Vertex que l'on traite actuellement : "+currentRed.getId());
+            System.out.println("nbArcBleuSortantVersRouge : "+currentRed.nbArcBleuSortantVersRouge);
+            System.out.println("######################################################################");
+            if(currentRed.nbArcBleuSortantVersRouge == 0) {
+                // Alors on supprime ce sommet rouge (currentRed)
+                return currentRed;
+            }
+            // Et l'on recommence
         }
-        if(deletions.isEmpty())return null;
-        return deletions.remove(0);*/
+        return null;
     }
 
 
