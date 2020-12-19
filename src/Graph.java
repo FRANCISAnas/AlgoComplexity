@@ -25,6 +25,7 @@ public class Graph {
             System.out.println("Ce sommet n'existe pas");
             return false;
         }
+        System.out.println("vertex = "+ vertex.toString());
         ColorG.COLOR color = vertex.getColor();
         if(color.equals(ColorG.COLOR.BLUE)){
             System.out.println("Impossible de supprimer un sommet bleu");

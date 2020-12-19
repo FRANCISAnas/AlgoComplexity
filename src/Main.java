@@ -25,13 +25,14 @@ public class Main {
         if(args.length > 0) {
             fileName = args[0];
         }
-        strategy = new Strategy0();
+        //strategy = new Strategy0();
         graph = initGraph(fileName);
         if(graph == null){
             System.out.println("Attention il y a eu une erreur");
             return;
         }
-        run(graph, strategy);
+        //Strategy4.question3Algorithme(graph, initAction);
+        run2(graph);
     }
 
 
@@ -158,6 +159,15 @@ public class Main {
             f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             GraphPanel gp = new GraphPanel();
             gp.init(f, g, s);
+        });
+    }
+
+    public static void run2(Graph g){
+        EventQueue.invokeLater(() -> {
+            JFrame f = new JFrame("Simulation Projet2 Algo");
+            f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            GraphPanel gp = new GraphPanel();
+            gp.init(f, g);
         });
     }
 

@@ -1,12 +1,12 @@
+import javax.swing.Timer;
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.Color;
 import java.awt.event.*;
 import java.io.IOException;
-import java.util.*;
 import java.util.List;
-import javax.swing.*;
-import javax.swing.Timer;
-import javax.swing.event.*;
+import java.util.*;
 
 /**
  * @author John B. Matthews; distribution per GPL.
@@ -31,7 +31,7 @@ public class GraphPanel extends JComponent {
     private static Graph graph;
     private static Strategy strategy;
     private boolean random = false;
-    private static int nbtests=100;
+    private static int nbtests = 100;
 
 
     public GraphPanel() {
@@ -40,7 +40,7 @@ public class GraphPanel extends JComponent {
         this.addMouseMotionListener(new MouseMotionHandler());
     }
 
-    public void init(JFrame f, Graph g, Strategy s){
+    public void init(JFrame f, Graph g, Strategy s) {
         f.add(control, BorderLayout.NORTH);
         f.add(new JScrollPane(this), BorderLayout.CENTER);
         f.getRootPane().setDefaultButton(control.defaultButton);
@@ -50,6 +50,17 @@ public class GraphPanel extends JComponent {
         strategy = s;
         f.setVisible(true);
     }
+
+    public void init(JFrame f, Graph g) {
+        f.add(control, BorderLayout.NORTH);
+        f.add(new JScrollPane(this), BorderLayout.CENTER);
+        f.getRootPane().setDefaultButton(control.defaultButton);
+        f.pack();
+        f.setLocationByPlatform(true);
+        graph = g;
+        f.setVisible(true);
+    }
+
     @Override
     public Dimension getPreferredSize() {
         return new Dimension(WIDE, HIGH);
@@ -68,7 +79,7 @@ public class GraphPanel extends JComponent {
         if (selecting) {
             g.setColor(Color.darkGray);
             g.drawRect(mouseRect.x, mouseRect.y,
-                mouseRect.width, mouseRect.height);
+                    mouseRect.width, mouseRect.height);
         }
     }
 
@@ -114,15 +125,15 @@ public class GraphPanel extends JComponent {
         public void mouseDragged(MouseEvent e) {
             if (selecting) {
                 mouseRect.setBounds(
-                    Math.min(mousePt.x, e.getX()),
-                    Math.min(mousePt.y, e.getY()),
-                    Math.abs(mousePt.x - e.getX()),
-                    Math.abs(mousePt.y - e.getY()));
+                        Math.min(mousePt.x, e.getX()),
+                        Math.min(mousePt.y, e.getY()),
+                        Math.abs(mousePt.x - e.getX()),
+                        Math.abs(mousePt.y - e.getY()));
                 NodeDraw.selectRect(nodeDraws, mouseRect);
             } else {
                 delta.setLocation(
-                    e.getX() - mousePt.x,
-                    e.getY() - mousePt.y);
+                        e.getX() - mousePt.x,
+                        e.getY() - mousePt.y);
                 NodeDraw.updatePosition(nodeDraws, delta);
                 mousePt = e.getPoint();
             }
@@ -131,13 +142,13 @@ public class GraphPanel extends JComponent {
     }
 
     private class ControlPanel extends JToolBar {
-        private Action newNode = new NewNodeAction("New" );
-        private Action clearAll = new ClearAction("Clear",this);
+        private Action newNode = new NewNodeAction("New");
+        private Action clearAll = new ClearAction("Clear", this);
         private Action init = new InitAction("Init prebuiltGraph", this);
-        private Action changeStrat = new ChangeStratAction("Change the strategy");
+        private Action changeStrat = new ChangeStratAction("Change the strategy", this);
         private Action changeRandomType = new ChangeRandomTypeAction("Change random Type");
-        private Action deleteAll = new DeleteAllAction("DeleteAll",this);
-        private Action delete = new DeleteAction("Delete Red",this);
+        private Action deleteAll = new DeleteAllAction("DeleteAll", this);
+        private Action delete = new DeleteAction("Delete Red", this);
         private Action random = new RandomAction("Random", this);
         private Action tests = new TestsAction("Run Tests", this);
         private JButton defaultButton = new JButton(newNode);
@@ -171,13 +182,13 @@ public class GraphPanel extends JComponent {
             });
             this.add(js5);
             JSpinner js = new JSpinner();
-            js.setModel(new SpinnerNumberModel(Math.abs(Main.pEdge*100), 0, 100, 5));
+            js.setModel(new SpinnerNumberModel(Math.abs(Main.pEdge * 100), 0, 100, 5));
             js.addChangeListener(new ChangeListener() {
 
                 @Override
                 public void stateChanged(ChangeEvent e) {
                     JSpinner s = (JSpinner) e.getSource();
-                    Main.pEdge = (Double) s.getValue()/100.;
+                    Main.pEdge = (Double) s.getValue() / 100.;
                     GraphPanel.this.repaint();
                 }
             });
@@ -198,26 +209,26 @@ public class GraphPanel extends JComponent {
             this.add(js);
             this.add(new JLabel("% vertex red : "));
             JSpinner js2 = new JSpinner();
-            js2.setModel(new SpinnerNumberModel(Math.abs(Main.pCVertex*100), 0, 100, 5));
+            js2.setModel(new SpinnerNumberModel(Math.abs(Main.pCVertex * 100), 0, 100, 5));
             js2.addChangeListener(new ChangeListener() {
 
                 @Override
                 public void stateChanged(ChangeEvent e) {
                     JSpinner s = (JSpinner) e.getSource();
-                    Main.pCVertex = (Double) s.getValue()/100.;
+                    Main.pCVertex = (Double) s.getValue() / 100.;
                     GraphPanel.this.repaint();
                 }
             });
             this.add(js2);
             this.add(new JLabel("% edge blue : "));
             JSpinner js3 = new JSpinner();
-            js3.setModel(new SpinnerNumberModel(Math.abs(Main.pCEdge*100), 0, 100, 5));
+            js3.setModel(new SpinnerNumberModel(Math.abs(Main.pCEdge * 100), 0, 100, 5));
             js3.addChangeListener(new ChangeListener() {
 
                 @Override
                 public void stateChanged(ChangeEvent e) {
                     JSpinner s = (JSpinner) e.getSource();
-                    Main.pCEdge = (Double) s.getValue()/100.;
+                    Main.pCEdge = (Double) s.getValue() / 100.;
                     GraphPanel.this.repaint();
                 }
             });
@@ -238,14 +249,14 @@ public class GraphPanel extends JComponent {
             this.add(tests);
             labelTest = new JLabel("%Restant");
             popup.add(new JMenuItem(delete));
-            Strategy[] s =Main.getAllStrats();
-            for (int i=0;i<s.length;i++) {
-                if(s[i]!=null) {
+            Strategy[] s = Main.getAllStrats();
+            for (int i = 0; i < s.length; i++) {
+                if (s[i] != null) {
                     stratCombo.addItem(i);
                 }
             }
             stratCombo.addActionListener(changeStrat);
-            for (Graph.GrapheType type : Graph.GrapheType.class.getEnumConstants()){
+            for (Graph.GrapheType type : Graph.GrapheType.class.getEnumConstants()) {
                 randomTypeCombo.addItem(type.toString());
             }
             randomTypeCombo.addActionListener(changeRandomType);
@@ -253,18 +264,20 @@ public class GraphPanel extends JComponent {
 
 
     }
+
     private class ClearAction extends AbstractAction {
         ControlPanel controlPanel;
+
         public ClearAction(String name, ControlPanel controlPanel) {
             super(name);
-            this.controlPanel =controlPanel;
+            this.controlPanel = controlPanel;
         }
 
         public void actionPerformed(ActionEvent e) {
             nodeDraws.clear();
             edgeDraws.clear();
-            Timer t = ((DeleteAllAction)this.controlPanel.deleteAll).timer;
-            if(t!=null)t.stop();
+            Timer t = ((DeleteAllAction) this.controlPanel.deleteAll).timer;
+            if (t != null) t.stop();
             repaint();
         }
     }
@@ -273,30 +286,33 @@ public class GraphPanel extends JComponent {
 
         ControlPanel controlPanel;
         public Timer timer;
+
         public DeleteAllAction(String name, ControlPanel controlPanel) {
             super(name);
             this.controlPanel = controlPanel;
         }
 
         public void actionPerformed(ActionEvent e) {
-            if(!random) {
+            if (!random) {
                 positionSave.clear();
                 positionSave.addAll(nodeDraws);
             }
-            timer = new Timer(0,new TimerListener((InitAction)controlPanel.init));
+            timer = new Timer(0, new TimerListener((InitAction) controlPanel.init));
             timer.setRepeats(true);
             timer.setDelay(GraphPanel.delayAnimation);
             timer.start();
         }
 
-        private class TimerListener implements ActionListener{
+        private class TimerListener implements ActionListener {
             private InitAction initAction;
-            public TimerListener(InitAction initAction){
+
+            public TimerListener(InitAction initAction) {
                 this.initAction = initAction;
             }
+
             @Override
             public void actionPerformed(ActionEvent e) {
-                Vertex toDelete = strategy.getNextVertexToDelete(graph);
+                /*Vertex toDelete = strategy.getNextVertexToDelete(graph);
                 if(toDelete ==null){
                     if(random)return;
                     try {
@@ -305,12 +321,12 @@ public class GraphPanel extends JComponent {
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
-                }
-                else {
-                    graph.deleteVertex(toDelete.getId());
-                    initAction.updateGraph(graph);
-                    repaint();
-                }
+                }*/
+                //else {
+                Strategy4.question3Algorithme(graph, initAction);
+                //initAction.updateGraph(graph);
+                repaint();
+                //}
             }
         }
     }
@@ -320,13 +336,14 @@ public class GraphPanel extends JComponent {
 
 
         private ControlPanel controlPanel;
+
         public DeleteAction(String name, ControlPanel controlPanel) {
             super(name);
             this.controlPanel = controlPanel;
         }
 
         public void actionPerformed(ActionEvent e) {
-            if(!random) {
+            if (!random) {
                 positionSave.clear();
                 positionSave.addAll(nodeDraws);
             }
@@ -337,7 +354,7 @@ public class GraphPanel extends JComponent {
                     graph.deleteVertex(n.id);
                 }
             }
-            ((InitAction)this.controlPanel.init).updateGraph(graph);
+            ((InitAction) this.controlPanel.init).updateGraph(graph);
             repaint();
         }
 
@@ -345,15 +362,21 @@ public class GraphPanel extends JComponent {
 
     private class ChangeStratAction extends AbstractAction {
 
-        public ChangeStratAction(String name) {
+        ControlPanel cp;
+        public ChangeStratAction(String name, ControlPanel cp) {
             super(name);
+            this.cp = cp;
         }
 
         public void actionPerformed(ActionEvent e) {
             JComboBox combo = (JComboBox) e.getSource();
-            int i  = (Integer) combo.getSelectedItem();
+            int i = (Integer) combo.getSelectedItem();
             try {
                 strategy = Main.getAllStrats()[i];
+                if(i == 4){
+
+                    Strategy4.question3Algorithme(graph, (InitAction) cp.init);
+                }
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -370,7 +393,7 @@ public class GraphPanel extends JComponent {
 
         public void actionPerformed(ActionEvent e) {
             JComboBox combo = (JComboBox) e.getSource();
-            String type  = (String) combo.getSelectedItem();
+            String type = (String) combo.getSelectedItem();
             try {
                 Main.randomGraphType = Graph.GrapheType.valueOf(type);
             } catch (Exception ex) {
@@ -379,6 +402,7 @@ public class GraphPanel extends JComponent {
             repaint();
         }
     }
+
     private class NewNodeAction extends AbstractAction {
 
         public NewNodeAction(String name) {
@@ -389,7 +413,7 @@ public class GraphPanel extends JComponent {
             NodeDraw.selectNone(nodeDraws);
             Point p = mousePt.getLocation();
             Color color = control.hueIcon.getColor();
-            NodeDraw n = new NodeDraw(p, radius, color, kind,rnd.nextInt());
+            NodeDraw n = new NodeDraw(p, radius, color, kind, rnd.nextInt());
             n.setSelected(true);
             nodeDraws.add(n);
             repaint();
@@ -400,6 +424,7 @@ public class GraphPanel extends JComponent {
     private class RandomAction extends AbstractAction {
 
         private ControlPanel controlPanel;
+
         public RandomAction(String name, ControlPanel panel) {
             super(name);
             this.controlPanel = panel;
@@ -407,12 +432,12 @@ public class GraphPanel extends JComponent {
 
         public void actionPerformed(ActionEvent e) {
             this.controlPanel.clearAll.actionPerformed(null);
-            if(Main.randomGraphType == Graph.GrapheType.NORMAL)
-                graph = Main.createRandomGraph(Main.pCVertex,Main.pCEdge,Main.pEdge,Main.nbVertices,-1);
-            else if(Main.randomGraphType == Graph.GrapheType.COMPLET)
+            if (Main.randomGraphType == Graph.GrapheType.NORMAL)
+                graph = Main.createRandomGraph(Main.pCVertex, Main.pCEdge, Main.pEdge, Main.nbVertices, -1);
+            else if (Main.randomGraphType == Graph.GrapheType.COMPLET)
                 graph = Main.createRandomCompleteGraph(Main.pCVertex, Main.pCEdge, Main.nbVertices);
-            else if(Main.randomGraphType == Graph.GrapheType.BIVERTEX)
-                graph = Main.createBiArete(Main.pCVertex,Main.pCEdge,Main.nbVertices);
+            else if (Main.randomGraphType == Graph.GrapheType.BIVERTEX)
+                graph = Main.createBiArete(Main.pCVertex, Main.pCEdge, Main.nbVertices);
             this.controlPanel.init.actionPerformed(null);
         }
     }
@@ -420,6 +445,7 @@ public class GraphPanel extends JComponent {
     private class TestsAction extends AbstractAction {
 
         private ControlPanel controlPanel;
+
         public TestsAction(String name, ControlPanel panel) {
             super(name);
             this.controlPanel = panel;
@@ -428,13 +454,13 @@ public class GraphPanel extends JComponent {
         public void actionPerformed(ActionEvent e) {
             double[][] n = Tests.testProf(strategy);
             System.out.println("\n");
-            for(int i = 0;i<=10;i++){
-                System.out.println("p= "+i/10.+" : " + Arrays.toString(n[i]));
+            for (int i = 0; i <= 10; i++) {
+                System.out.println("p= " + i / 10. + " : " + Arrays.toString(n[i]));
             }
         }
     }
 
-    private class InitAction extends AbstractAction {
+    class InitAction extends AbstractAction {
 
         Edge[][] edges;
         List<Vertex> vertices;
@@ -445,71 +471,72 @@ public class GraphPanel extends JComponent {
             this.controlPanel = controlPanel;
         }
 
-        public void initGraphAction(Graph graph){
+        public void initGraphAction(Graph graph) {
             this.edges = graph.getEdges();
             this.vertices = graph.getVertices();
             GraphPanel.graph = graph;
         }
 
-        public void updateGraph(Graph graph){
+        public void updateGraph(Graph graph) {
             initGraphAction(graph);
             List<NodeDraw> nodeDrawsSave = new ArrayList<>(nodeDraws);
             nodeDraws.clear();
             edgeDraws.clear();
             for (int i = 0; i < vertices.size(); i++) {
-                if(vertices.get(i).getColor().equals(ColorG.COLOR.BLUE))
-                    nodeDraws.add(new NodeDraw(getNodeById(vertices.get(i).getId(),nodeDrawsSave).getLocation(), radius,new Color(173,216,230) , kind,vertices.get(i).getId()));
-                else if(vertices.get(i).getColor().equals(ColorG.COLOR.RED))
-                    nodeDraws.add(new NodeDraw(getNodeById(vertices.get(i).getId(),nodeDrawsSave).getLocation(), radius,Color.RED , kind,vertices.get(i).getId()));
+                if (vertices.get(i).getColor().equals(ColorG.COLOR.BLUE))
+                    nodeDraws.add(new NodeDraw(getNodeById(vertices.get(i).getId(), nodeDrawsSave).getLocation(), radius, new Color(173, 216, 230), kind, vertices.get(i).getId()));
+                else if (vertices.get(i).getColor().equals(ColorG.COLOR.RED))
+                    nodeDraws.add(new NodeDraw(getNodeById(vertices.get(i).getId(), nodeDrawsSave).getLocation(), radius, Color.RED, kind, vertices.get(i).getId()));
             }
-            for(int i = 0;i<nodeDraws.size();i++){
-                for(int j = 0;j<nodeDraws.size();j++){
+            for (int i = 0; i < nodeDraws.size(); i++) {
+                for (int j = 0; j < nodeDraws.size(); j++) {
                     ColorG.COLOR color = edges[nodeDraws.get(i).id][nodeDraws.get(j).id].getColor();
-                    if(color== ColorG.COLOR.BLUE)
-                        edgeDraws.add(new EdgeDraw(nodeDraws.get(i),nodeDraws.get(j),Color.BLUE));
-                    else if(color== ColorG.COLOR.RED)
-                        edgeDraws.add(new EdgeDraw(nodeDraws.get(i),nodeDraws.get(j),Color.RED));
+                    if (color == ColorG.COLOR.BLUE)
+                        edgeDraws.add(new EdgeDraw(nodeDraws.get(i), nodeDraws.get(j), Color.BLUE));
+                    else if (color == ColorG.COLOR.RED)
+                        edgeDraws.add(new EdgeDraw(nodeDraws.get(i), nodeDraws.get(j), Color.RED));
                 }
             }
         }
+
         public void resetGraph() throws IOException {
             initGraphAction(Main.initGraph(Main.fileName));
             List<NodeDraw> nodeDrawsSave = new ArrayList<>(positionSave);
             nodeDraws.clear();
             edgeDraws.clear();
             for (int i = 0; i < vertices.size(); i++) {
-                if(vertices.get(i).getColor().equals(ColorG.COLOR.BLUE))
-                    nodeDraws.add(new NodeDraw(getNodeById(vertices.get(i).getId(),nodeDrawsSave).getLocation(), radius,new Color(173,216,230) , kind,vertices.get(i).getId()));
-                else if(vertices.get(i).getColor().equals(ColorG.COLOR.RED))
-                    nodeDraws.add(new NodeDraw(getNodeById(vertices.get(i).getId(),nodeDrawsSave).getLocation(), radius,Color.RED , kind,vertices.get(i).getId()));
+                if (vertices.get(i).getColor().equals(ColorG.COLOR.BLUE))
+                    nodeDraws.add(new NodeDraw(getNodeById(vertices.get(i).getId(), nodeDrawsSave).getLocation(), radius, new Color(173, 216, 230), kind, vertices.get(i).getId()));
+                else if (vertices.get(i).getColor().equals(ColorG.COLOR.RED))
+                    nodeDraws.add(new NodeDraw(getNodeById(vertices.get(i).getId(), nodeDrawsSave).getLocation(), radius, Color.RED, kind, vertices.get(i).getId()));
             }
-            for(int i = 0;i<nodeDraws.size();i++){
-                for(int j = 0;j<nodeDraws.size();j++){
+            for (int i = 0; i < nodeDraws.size(); i++) {
+                for (int j = 0; j < nodeDraws.size(); j++) {
                     ColorG.COLOR color = edges[nodeDraws.get(i).id][nodeDraws.get(j).id].getColor();
-                    if(color== ColorG.COLOR.BLUE)
-                        edgeDraws.add(new EdgeDraw(nodeDraws.get(i),nodeDraws.get(j),Color.BLUE));
-                    else if(color== ColorG.COLOR.RED)
-                        edgeDraws.add(new EdgeDraw(nodeDraws.get(i),nodeDraws.get(j),Color.RED));
+                    if (color == ColorG.COLOR.BLUE)
+                        edgeDraws.add(new EdgeDraw(nodeDraws.get(i), nodeDraws.get(j), Color.BLUE));
+                    else if (color == ColorG.COLOR.RED)
+                        edgeDraws.add(new EdgeDraw(nodeDraws.get(i), nodeDraws.get(j), Color.RED));
                 }
             }
         }
+
         public void actionPerformed(ActionEvent e) {
 
             this.controlPanel.clearAll.actionPerformed(null);
             Graph graph = null;
-            if(e !=null) {
+            if (e != null) {
                 random = false;
                 try {
                     graph = Objects.requireNonNull(Main.initGraph(Main.fileName));
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
-            }
-            else {
+            } else {
                 graph = GraphPanel.graph;
                 random = true;
             }
-            if(positionSave.size()!=0 && e !=null){
+            if (positionSave.size() != 0 && e != null) {
                 try {
                     resetGraph();
                 } catch (IOException ex) {
@@ -523,18 +550,18 @@ public class GraphPanel extends JComponent {
 
             for (int i = 0; i < vertices.size(); i++) {
                 Point p = new Point(rnd.nextInt(getWidth()), rnd.nextInt(getHeight()));
-                if(vertices.get(i).getColor().equals(ColorG.COLOR.BLUE))
-                    nodeDraws.add(new NodeDraw(p, radius,new Color(173,216,230) , kind,vertices.get(i).getId()));
-                else if(vertices.get(i).getColor().equals(ColorG.COLOR.RED))
-                    nodeDraws.add(new NodeDraw(p, radius,Color.RED , kind,vertices.get(i).getId()));
+                if (vertices.get(i).getColor().equals(ColorG.COLOR.BLUE))
+                    nodeDraws.add(new NodeDraw(p, radius, new Color(173, 216, 230), kind, vertices.get(i).getId()));
+                else if (vertices.get(i).getColor().equals(ColorG.COLOR.RED))
+                    nodeDraws.add(new NodeDraw(p, radius, Color.RED, kind, vertices.get(i).getId()));
             }
-            for(int i = 0;i<edges.length;i++){
-                for(int j = 0;j<edges.length;j++){
+            for (int i = 0; i < edges.length; i++) {
+                for (int j = 0; j < edges.length; j++) {
                     ColorG.COLOR color = edges[i][j].getColor();
-                    if(color== ColorG.COLOR.BLUE)
-                        edgeDraws.add(new EdgeDraw(nodeDraws.get(i),nodeDraws.get(j),Color.BLUE));
-                    else if(color== ColorG.COLOR.RED)
-                        edgeDraws.add(new EdgeDraw(nodeDraws.get(i),nodeDraws.get(j),Color.RED));
+                    if (color == ColorG.COLOR.BLUE)
+                        edgeDraws.add(new EdgeDraw(nodeDraws.get(i), nodeDraws.get(j), Color.BLUE));
+                    else if (color == ColorG.COLOR.RED)
+                        edgeDraws.add(new EdgeDraw(nodeDraws.get(i), nodeDraws.get(j), Color.RED));
                 }
             }
             repaint();
@@ -569,10 +596,10 @@ public class GraphPanel extends JComponent {
             Point p1 = n1.getLocation();
             Point p2 = n2.getLocation();
             g.setColor(color);
-            g.drawLine(p1.x+plusMinus1(), p1.y+plusMinus1(), p2.x+plusMinus1(), p2.y+plusMinus1());
+            g.drawLine(p1.x + plusMinus1(), p1.y + plusMinus1(), p2.x + plusMinus1(), p2.y + plusMinus1());
             g.setColor(Color.black);
-            String s = ((n1.p.getX()<n2.p.getX()))?">":"<";
-            g.drawString(s,(int)(n1.p.getX()+n2.p.getX())/2,(int)(n1.p.getY()+n2.p.getY())/2);
+            String s = ((n1.p.getX() < n2.p.getX())) ? ">" : "<";
+            g.drawString(s, (int) (n1.p.getX() + n2.p.getX()) / 2, (int) (n1.p.getY() + n2.p.getY()) / 2);
         }
     }
 
@@ -588,6 +615,7 @@ public class GraphPanel extends JComponent {
         private boolean selected = false;
         private Rectangle b = new Rectangle();
         private int id;
+
         /**
          * Construct a new node.
          */
@@ -624,7 +652,7 @@ public class GraphPanel extends JComponent {
                 g.drawRect(b.x, b.y, b.width, b.height);
             }
             g.setColor(Color.BLACK);
-            g.drawString(this.id+"",(int)p.getX(),(int)p.getY());
+            g.drawString(this.id + "", (int) p.getX(), (int) p.getY());
         }
 
         /**
@@ -742,17 +770,17 @@ public class GraphPanel extends JComponent {
         }
     }
 
-    public NodeDraw getNodeById(int id, List<NodeDraw> nodeDraws){
-        for(NodeDraw nodeDraw :nodeDraws){
-            if(nodeDraw.id==id)
+    public NodeDraw getNodeById(int id, List<NodeDraw> nodeDraws) {
+        for (NodeDraw nodeDraw : nodeDraws) {
+            if (nodeDraw.id == id)
                 return nodeDraw;
         }
         return null;
     }
-    public static int plusMinus1(){
-        return (Math.random()>0.5)?1:-1;
-    }
 
+    public static int plusMinus1() {
+        return (Math.random() > 0.5) ? 1 : -1;
+    }
 
 
 }
