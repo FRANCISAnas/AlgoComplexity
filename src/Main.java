@@ -12,6 +12,7 @@ import java.util.*;
 public class Main {
 
     /** Variables modifiées/utilisées par l'affichage : (valeurs par défaut ici) **/
+
     public static String fileName = null;
     public static Strategy strategy = null;
     public static double pCEdge = 0.5;
