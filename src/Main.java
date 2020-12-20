@@ -135,10 +135,9 @@ public class Main {
                 }
                 for(int i =0;i<neig.length;i++){
                     if(neig[i]>=0) {
-                        //vertex.addNeighbor(vertices.get(neig[i]));
+                        vertex.addNeighbor(vertices.get(neig[i]));
                         edges[vertex.getId()][neig[i]] = new Edge(colors[i]);
-                        TrafficNeighbor trafficNeighbor =  new TrafficNeighbor(vertices.get(neig[i]), edges[vertex.getId()][neig[i]]);
-                        vertex.trafficNeighbors.add( trafficNeighbor);
+                        vertex.trafficNeighbors.put( vertices.get(neig[i]),edges[vertex.getId()][neig[i]]);
                     }
                 }
             }
@@ -169,7 +168,7 @@ public class Main {
         }
         for(int i =0;i<100;i++){
             try {
-                Strategy s=  (Strategy) Class.forName("Strategy"+i).newInstance();
+                Strategy s=  (Strategy) Class.forName("Heuristic"+i).newInstance();
                 l[i] = s;
             }
             catch (Exception e){}

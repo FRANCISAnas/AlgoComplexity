@@ -1,6 +1,6 @@
 package project.core;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -10,7 +10,7 @@ public class Vertex {
     private ColorBR color;
     private List<Vertex> neighbors;
     private int id;
-    public List<TrafficNeighbor> trafficNeighbors;
+    public HashMap<Vertex, Edge> trafficNeighbors;
     public int nbArcBleuSortantVersRouge;
     public int nbArcBleuSortantVersBleu;
     public int nbArcRougeSortantVersBleu;
@@ -29,7 +29,7 @@ public class Vertex {
         this.color = color;
         this.id = id;
         this.neighbors = new ArrayList<>();
-        this.trafficNeighbors = new ArrayList<>();
+        this.trafficNeighbors = new HashMap<>();
     }
 
     public int calculateScore() {
@@ -37,16 +37,16 @@ public class Vertex {
         this.nbArcRougeSortantVersBleu();
         this.nbArcBleuSortantVersBleu();
         this.nbArcRougeSortantVersRouge();
-        return ((this.nbArcRougeSortantVersBleu * 1000) + this.nbArcBleuSortantVersBleu)
-                - ((this.nbArcBleuSortantVersRouge * 1000) + this.nbArcRougeSortantVersRouge);
+        return ((this.nbArcRougeSortantVersBleu * neighbors.size()/2) + this.nbArcBleuSortantVersBleu)
+                - ((this.nbArcBleuSortantVersRouge * neighbors.size()/2) + this.nbArcRougeSortantVersRouge);
     }
 
 
     public void nbArcBleuSortantVersRouge() {
         nbArcBleuSortantVersRouge = 0;
-        for (TrafficNeighbor t : trafficNeighbors) {
-            if (t.getEdge().getColor() == ColorBR.BLUE) {
-                if (t.getVertex().getColor() == ColorBR.RED) {
+        for (Vertex vertex : trafficNeighbors.keySet()) {
+            if (trafficNeighbors.get(vertex).getColor() == ColorBR.BLUE) {
+                if (vertex.getColor() == ColorBR.RED) {
                     nbArcBleuSortantVersRouge++;
                 }
             }
@@ -55,9 +55,9 @@ public class Vertex {
 
     public void nbArcRougeSortantVersBleu() {
         nbArcRougeSortantVersBleu = 0;
-        for (TrafficNeighbor t : trafficNeighbors) {
-            if (t.getEdge().getColor() == ColorBR.RED) {
-                if (t.getVertex().getColor() == ColorBR.BLUE) {
+        for(Vertex vertex : trafficNeighbors.keySet()){
+            if(trafficNeighbors.get(vertex).getColor() == ColorBR.RED){
+                if(vertex.getColor() == ColorBR.BLUE){
                     nbArcRougeSortantVersBleu++;
                 }
             }
@@ -67,9 +67,9 @@ public class Vertex {
 
     public void nbArcRougeSortantVersRouge() {
         nbArcRougeSortantVersRouge = 0;
-        for (TrafficNeighbor t : trafficNeighbors) {
-            if (t.getEdge().getColor() == ColorBR.RED) {
-                if (t.getVertex().getColor() == ColorBR.RED) {
+        for(Vertex vertex : trafficNeighbors.keySet()){
+            if(trafficNeighbors.get(vertex).getColor() == ColorBR.RED){
+                if(vertex.getColor() == ColorBR.RED){
                     nbArcRougeSortantVersRouge++;
                 }
             }
@@ -78,22 +78,13 @@ public class Vertex {
 
     public void nbArcBleuSortantVersBleu() {
         nbArcBleuSortantVersBleu = 0;
-        for (TrafficNeighbor t : trafficNeighbors) {
-            if (t.getEdge().getColor() == ColorBR.BLUE) {
-                if (t.getVertex().getColor() == ColorBR.BLUE) {
+        for(Vertex vertex : trafficNeighbors.keySet()){
+            if(trafficNeighbors.get(vertex).getColor() == ColorBR.BLUE){
+                if(vertex.getColor() == ColorBR.BLUE){
                     nbArcBleuSortantVersBleu++;
                 }
             }
 
-        }
-    }
-
-    public void nbArcRougeSortant() {
-        nbArcRougeSortant = 0;
-        for(TrafficNeighbor t : trafficNeighbors){
-            if(t.getEdge().getColor() == ColorBR.RED){
-                nbArcRougeSortant++;
-            }
         }
     }
 
@@ -122,22 +113,4 @@ public class Vertex {
         return id + color.toString();
     }
 
-    public int nbArcSortant() {
-        return trafficNeighbors.size();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Vertex vertex = (Vertex) o;
-        return id == vertex.id &&
-                color == vertex.color &&
-                neighbors.equals(vertex.neighbors);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(color, neighbors, id);
-    }
 }

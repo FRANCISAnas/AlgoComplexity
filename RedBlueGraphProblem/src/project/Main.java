@@ -2,7 +2,6 @@ package project;
 
 import project.core.ColorBR;
 import project.core.Edge;
-import project.core.TrafficNeighbor;
 import project.core.Vertex;
 import project.graph.Graph;
 import project.graph.GraphPanel;
@@ -111,10 +110,9 @@ public class Main {
                 }
                 for(int i =0;i<neig.length;i++){
                     if(neig[i]>=0) {
-                        //vertex.addNeighbor(vertices.get(neig[i]));
+                        vertex.addNeighbor(vertices.get(neig[i]));
                         edges[vertex.getId()][neig[i]] = new Edge(colors[i]);
-                        TrafficNeighbor trafficNeighbor =  new TrafficNeighbor(vertices.get(neig[i]), edges[vertex.getId()][neig[i]]);
-                        vertex.trafficNeighbors.add( trafficNeighbor);
+                        vertex.trafficNeighbors.put( vertices.get(neig[i]),edges[vertex.getId()][neig[i]]);
                     }
                 }
             }
