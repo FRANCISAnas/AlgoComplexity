@@ -13,9 +13,9 @@ public class Strategy3 implements Strategy {
         List<Vertex> redVertex = Utility.getRedVertex(graph);
         Vertex sommetTODelete = Utility.getFirstRedVertex(graph);
         if(sommetTODelete==null)return null;
-        sommetTODelete.calculateRatioV2();
         for (Vertex cuSomm : redVertex) {
             cuSomm.calculateRatioV2();
+            sommetTODelete.calculateRatioV2();
             if(sommetTODelete.ratio < cuSomm.ratio){
                 sommetTODelete = cuSomm;
             }
