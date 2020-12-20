@@ -1,3 +1,9 @@
+package project.graph;
+
+import project.core.ColorBR;
+import project.core.Edge;
+import project.core.Vertex;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -6,7 +12,7 @@ public class Graph {
     private List<Vertex> vertices;
     private Edge[][] edges;
 
-    Graph(List<Vertex> vertices, Edge[][] edges){
+    public Graph(List<Vertex> vertices, Edge[][] edges){
         this.vertices = vertices;
         this.edges = edges;
     }
@@ -19,7 +25,7 @@ public class Graph {
         return edges;
     }
 
-    boolean deleteVertex(int nb){
+    public boolean deleteVertex(int nb){
         Vertex vertex = getVertexByNb(nb, vertices);
         if(vertex==null){
             System.out.println("Ce sommet n'existe pas");

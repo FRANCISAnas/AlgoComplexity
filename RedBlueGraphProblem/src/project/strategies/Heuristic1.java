@@ -1,11 +1,14 @@
+package project.strategies;
+
+import project.core.ColorBR;
+import project.graph.Graph;
+import project.core.Vertex;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Strategy1 implements Strategy {
+public class Heuristic1 implements Strategy {
     /** Amélioration de la Strat0 dans des cas particuliers d'égalité**/
-
-    @Override
-    public void init(Graph graph) {}
 
     @Override
     public Vertex getNextVertexToDelete(Graph graph) {
@@ -14,7 +17,7 @@ public class Strategy1 implements Strategy {
         if(sommetTODelete==null)return null;
         List<Vertex> equals = new ArrayList<>();
         for (Vertex cuSomm : sommets) {
-            if (cuSomm.getColor() == ColorG.COLOR.RED) {
+            if (cuSomm.getColor() == ColorBR.RED) {
                 cuSomm.nbArcBleuSortantVersRouge();
                 if (cuSomm.nbArcBleuSortantVersRouge < sommetTODelete.nbArcBleuSortantVersRouge) {
                     sommetTODelete = cuSomm;

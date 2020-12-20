@@ -1,3 +1,5 @@
+package project.core;
+
 import java.util.Objects;
 
 public class Edge {

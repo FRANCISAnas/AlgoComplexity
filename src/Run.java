@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Tests {
+public class Run {
 
     public static double runTests(int nb, Strategy strategy){
         List<Double> score = new ArrayList<>();

@@ -1,12 +1,11 @@
+package project.strategies;
+
+import project.graph.Graph;
+import project.core.Vertex;
+
 import java.util.List;
 
-public class Strategy3 implements Strategy {
-    private Graph copy;
-
-    @Override
-    public void init(Graph graph) {
-        this.copy = graph.getCopy();
-    }
+public class Heuristic2 implements Strategy {
 
     @Override
     public Vertex getNextVertexToDelete(Graph graph) {

@@ -1,3 +1,11 @@
+package project.graph;
+
+import project.*;
+import project.core.ColorBR;
+import project.core.Edge;
+import project.core.Vertex;
+import project.strategies.Strategy;
+
 import java.awt.*;
 import java.awt.Color;
 import java.awt.event.*;
@@ -426,7 +434,7 @@ public class GraphPanel extends JComponent {
         }
 
         public void actionPerformed(ActionEvent e) {
-            double[][] n = Run.testProf(strategy);
+            double[][] n = RunTests.launchStats(strategy);
             System.out.println("\n");
             for(int i = 0;i<=10;i++){
                 System.out.println("p= "+i/10.+" : " + Arrays.toString(n[i]));

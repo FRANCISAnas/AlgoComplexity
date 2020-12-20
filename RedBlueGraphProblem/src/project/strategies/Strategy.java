@@ -1,3 +1,8 @@
+package project.strategies;
+
+import project.graph.Graph;
+import project.core.Vertex;
+
 import java.util.List;
 
 public interface Strategy {

@@ -1,3 +1,9 @@
+package project.strategies;
+
+import project.core.ColorBR;
+import project.core.Vertex;
+import project.graph.Graph;
+
 import java.util.ArrayList;
 import java.util.List;
 

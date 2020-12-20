@@ -1,0 +1,19 @@
+8
+RED
+BLUE
+RED
+BLUE
+BLUE
+RED
+RED
+BLUE
+RED 1
+none
+RED 3, BLUE 1
+BLUE 4
+none
+BLUE 4, BLUE 6
+none
+RED 6
+
+

@@ -1,3 +1,14 @@
+package project;
+
+import project.core.ColorBR;
+import project.core.Edge;
+import project.core.TrafficNeighbor;
+import project.core.Vertex;
+import project.graph.Graph;
+import project.graph.GraphPanel;
+import project.strategies.Heuristic1;
+import project.strategies.Strategy;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.ByteArrayInputStream;
