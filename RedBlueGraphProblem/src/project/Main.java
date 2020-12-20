@@ -46,43 +46,8 @@ public class Main {
         run(graph, strategy);
     }
 
-
-    public static Graph createRandomCompleteGraph(double pcVertex, double pcEdge, int nbVertices){
-        return createRandomGraph(pcVertex,pcEdge,1,nbVertices,-1);
-    }
-
-
-    public static Graph createBiArete(double pCVertex, double pCEdge, int nbVertices){
+    public static Graph createRandomCompleteGraph(double pCVertex, double pCEdge, int nbVertices){
         List<Vertex> vertices = new ArrayList<>();
-        Edge[][] edges = new Edge[nbVertices][nbVertices];
-        for(int i = 0;i<nbVertices;i++){
-            Arrays.fill(edges[i],new Edge(ColorBR.NONE));
-        }
-        for(int i =0;i<nbVertices;i++){
-            ColorBR color = (Math.random()<=pCVertex)? ColorBR.RED: ColorBR.BLUE;
-            vertices.add(new Vertex(color,i));
-        }
-        for(int i=0;i< nbVertices-1;i++){
-            if(Math.random()<0.5){
-                vertices.get(i).addNeighbor(vertices.get(i+1));
-                ColorBR color = (Math.random()<=pCEdge)? ColorBR.BLUE: ColorBR.RED;
-                edges[vertices.get(i).getId()][vertices.get(i+1).getId()] = new Edge(color);
-            }
-        }
-        for(int i=nbVertices-1;i>0;i--){
-            if(edges[vertices.get(i-1).getId()][vertices.get(i).getId()].getColor() == ColorBR.NONE){
-                vertices.get(i).addNeighbor(vertices.get(i-1));
-                ColorBR color = (Math.random()<=pCEdge)? ColorBR.BLUE: ColorBR.RED;
-                edges[vertices.get(i).getId()][vertices.get(i-1).getId()] = new Edge(color);
-            }
-        }
-        return new Graph(vertices,edges);
-    }
-    public static Graph createRandomGraph(double pCVertex, double pCEdge, double pEdge,int nbVertices, int nbVerticesMax){
-        List<Vertex> vertices = new ArrayList<>();
-        if(nbVertices ==-1){
-            nbVertices = (new Random().nextInt(nbVerticesMax));
-        }
         Edge[][] edges = new Edge[nbVertices][nbVertices];
         for(int i = 0;i<nbVertices;i++){
             Arrays.fill(edges[i],new Edge(ColorBR.NONE));
@@ -106,7 +71,7 @@ public class Main {
 
     /**************************** NE PAS TOUCHER APRES *****************/
 
-    static Graph initGraph(String fileName) throws IOException {
+    public static Graph initGraph(String fileName) throws IOException {
         Scanner sc;
         if(fileName != null && !fileName.isEmpty()) {
             String s = new String(Files.readAllBytes(Paths.get("./" + fileName)));
@@ -183,7 +148,7 @@ public class Main {
                 Strategy s=  (Strategy) Class.forName("Strategy"+i).newInstance();
                 l[i] = s;
             }
-            catch (Exception e){}
+            catch (Exception ignored){}
         }
         return l;
     }

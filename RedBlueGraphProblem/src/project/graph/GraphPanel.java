@@ -415,12 +415,8 @@ public class GraphPanel extends JComponent {
 
         public void actionPerformed(ActionEvent e) {
             this.controlPanel.clearAll.actionPerformed(null);
-            if(Main.randomGraphType == Graph.GrapheType.NORMAL)
-                graph = Main.createRandomGraph(Main.pCVertex,Main.pCEdge,Main.pEdge,Main.nbVertices,-1);
-            else if(Main.randomGraphType == Graph.GrapheType.COMPLET)
+            if(Main.randomGraphType == Graph.GrapheType.COMPLET)
                 graph = Main.createRandomCompleteGraph(Main.pCVertex, Main.pCEdge, Main.nbVertices);
-            else if(Main.randomGraphType == Graph.GrapheType.BIVERTEX)
-                graph = Main.createBiArete(Main.pCVertex,Main.pCEdge,Main.nbVertices);
             this.controlPanel.init.actionPerformed(null);
         }
     }
@@ -434,7 +430,7 @@ public class GraphPanel extends JComponent {
         }
 
         public void actionPerformed(ActionEvent e) {
-            double[][] n = RunTests.launchStats(strategy);
+            double[][] n = Stats.run(strategy);
             System.out.println("\n");
             for(int i = 0;i<=10;i++){
                 System.out.println("p= "+i/10.+" : " + Arrays.toString(n[i]));

@@ -2,17 +2,7 @@
 
 Anas FRANCIS, Lucas DOMINGUEZ, Thibaut ESTEVE, Angele BADIA
 
-Pour le PYTHON :
-python red_blue_graph.py <numéroHeuristique>
-
-
-
-
-
-
-
-
-Pour le JAVA : 
+JAVA : 
 Lancement rapide (en utilisant que le jar) :
 	java -jar Simulation.jar ExempleProf.txt
 	cliquer sur init
