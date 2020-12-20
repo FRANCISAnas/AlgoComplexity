@@ -10,7 +10,6 @@
 .mtj.tmp/
 Simulation1.2.iml
 # Package Files #
-*.jar
 *.war
 *.nar
 *.ear
