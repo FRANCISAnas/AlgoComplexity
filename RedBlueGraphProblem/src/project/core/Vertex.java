@@ -15,7 +15,7 @@ public class Vertex {
     public int nbArcBleuSortantVersBleu;
     public int nbArcRougeSortantVersBleu;
     public int nbArcRougeSortantVersRouge;
-    public int ratio;
+    //public int ratio;
     public int nbArcRougeSortant;
 
     public Vertex(ColorBR color, List<Vertex> neighbors, int id) {
@@ -32,19 +32,12 @@ public class Vertex {
         this.trafficNeighbors = new ArrayList<>();
     }
 
-    public void calculateRatio() {
-        this.nbArcBleuSortantVersRouge();
-        this.nbArcRougeSortantVersBleu();
-        ratio = this.nbArcRougeSortantVersBleu - this.nbArcBleuSortantVersRouge;
-    }
-
-    public void calculateRatioV2() {
+    public int calculateScore() {
         this.nbArcBleuSortantVersRouge();
         this.nbArcRougeSortantVersBleu();
         this.nbArcBleuSortantVersBleu();
         this.nbArcRougeSortantVersRouge();
-
-        ratio = ((this.nbArcRougeSortantVersBleu * 1000) + this.nbArcBleuSortantVersBleu)
+        return ((this.nbArcRougeSortantVersBleu * 1000) + this.nbArcBleuSortantVersBleu)
                 - ((this.nbArcBleuSortantVersRouge * 1000) + this.nbArcRougeSortantVersRouge);
     }
 

@@ -10,10 +10,10 @@ import java.util.List;
 public class Utility {
 
     public static Vertex getFirstRedVertex(Graph graph){
-        for (Vertex cuSomm : graph.getVertices()){
-            if(cuSomm.getColor() ==  ColorBR.RED){
-                cuSomm.nbArcBleuSortantVersRouge();
-                return cuSomm;
+        for (Vertex v : graph.getVertices()){
+            if(v.getColor() ==  ColorBR.RED){
+                v.nbArcBleuSortantVersRouge();
+                return v;
             }
         }
         return null;
@@ -21,9 +21,9 @@ public class Utility {
 
     public static List<Vertex> getRedVertex(Graph graph){
         List<Vertex> redVertex = new ArrayList<>();
-        for (Vertex cuSomm : graph.getVertices()){
-            if(cuSomm.getColor() ==  ColorBR.RED){
-                redVertex.add(cuSomm);
+        for (Vertex v : graph.getVertices()){
+            if(v.getColor() ==  ColorBR.RED){
+                redVertex.add(v);
             }
         }
         return redVertex;

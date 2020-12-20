@@ -10,15 +10,16 @@ public class Heuristic2 implements Strategy {
     @Override
     public Vertex getNextVertexToDelete(Graph graph) {
         List<Vertex> redVertex = Utility.getRedVertex(graph);
-        Vertex sommetTODelete = Utility.getFirstRedVertex(graph);
-        if(sommetTODelete==null)return null;
-        for (Vertex cuSomm : redVertex) {
-            cuSomm.calculateRatioV2();
-            sommetTODelete.calculateRatioV2();
-            if(sommetTODelete.ratio < cuSomm.ratio){
-                sommetTODelete = cuSomm;
+        Vertex toDelete = Utility.getFirstRedVertex(graph);
+        if(toDelete==null) return null;
+        int score = toDelete.calculateScore();
+        for (Vertex v : redVertex) {
+            int v_score = v.calculateScore();
+            if(v_score > score){
+                toDelete = v;
+                score = v_score;
             }
         }
-        return sommetTODelete;
+        return toDelete;
     }
 }
