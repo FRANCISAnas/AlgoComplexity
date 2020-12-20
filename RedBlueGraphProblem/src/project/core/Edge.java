@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class Edge {
 
-    private ColorBR color;
+    private final ColorBR color;
 
     public Edge(ColorBR color){
         this.color = color;

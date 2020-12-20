@@ -4,8 +4,8 @@ import java.util.Objects;
 
 public class TrafficNeighbor {
 
-    private Vertex v;
-    private Edge edge;
+    private final Vertex v;
+    private final Edge edge;
 
     public TrafficNeighbor(Vertex vertex, Edge edge){
         this.v = vertex;

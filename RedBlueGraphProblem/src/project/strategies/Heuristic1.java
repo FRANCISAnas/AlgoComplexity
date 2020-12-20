@@ -14,30 +14,29 @@ public class Heuristic1 implements Strategy {
     public Vertex getNextVertexToDelete(Graph graph) {
         List<Vertex> vertices = graph.getVertices();
         Vertex toDelete = Utility.getFirstRedVertex(graph);
-        if(toDelete==null)return null;
-        List<Vertex> equals = new ArrayList<>();
+        if(toDelete==null) return null;
+        List<Vertex> exaequo = new ArrayList<>();
+        int score = toDelete.nOutgoingBlueEdgesToRed();
         for (Vertex v : vertices) {
             if (v.getColor() == ColorBR.RED) {
-                v.nbArcBleuSortantVersRouge();
-                if (v.nbArcBleuSortantVersRouge < toDelete.nbArcBleuSortantVersRouge) {
+                int tmp = v.nOutgoingBlueEdgesToRed();
+                if (tmp < score) {
+                    exaequo.clear();
                     toDelete = v;
-                    equals.clear();
-                } else if (v.nbArcBleuSortantVersRouge == toDelete.nbArcBleuSortantVersRouge) {
-                    equals.add(v);
-                    if(!equals.contains(toDelete))equals.add(toDelete);
-                }
+                    score = tmp;
+                } else if (tmp == score)
+                    exaequo.add(v);
             }
         }
-        if(equals.isEmpty())return toDelete;
-        toDelete = equals.get(0);
-        toDelete.nbArcBleuSortantVersBleu();
-        for(Vertex vertex : equals){
-            vertex.nbArcBleuSortantVersBleu();
-            if(vertex.nbArcBleuSortantVersBleu>toDelete.nbArcBleuSortantVersBleu){
-                toDelete = vertex;
+        if(exaequo.isEmpty()) return toDelete;
+        score = toDelete.nOutgoingBlueEdgesToBlue();
+        for(Vertex v: exaequo){
+            int tmp = v.nOutgoingBlueEdgesToBlue();
+            if(tmp > score) {
+                toDelete = v;
+                score = tmp;
             }
         }
         return toDelete;
     }
-    
 }

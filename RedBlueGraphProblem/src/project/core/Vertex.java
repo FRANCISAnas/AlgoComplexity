@@ -8,97 +8,62 @@ public class Vertex {
 
 
     private ColorBR color;
-    private List<Vertex> neighbors;
-    private int id;
+    private final int id;
     public List<TrafficNeighbor> trafficNeighbors;
-    public int nbArcBleuSortantVersRouge;
-    public int nbArcBleuSortantVersBleu;
-    public int nbArcRougeSortantVersBleu;
-    public int nbArcRougeSortantVersRouge;
-    //public int ratio;
-    public int nbArcRougeSortant;
-
-    public Vertex(ColorBR color, List<Vertex> neighbors, int id) {
-        this.color = color;
-        this.neighbors = neighbors;
-        this.id = id;
-
-    }
 
     public Vertex(ColorBR color, int id) {
         this.color = color;
         this.id = id;
-        this.neighbors = new ArrayList<>();
         this.trafficNeighbors = new ArrayList<>();
     }
 
     public int calculateScore() {
-        this.nbArcBleuSortantVersRouge();
-        this.nbArcRougeSortantVersBleu();
-        this.nbArcBleuSortantVersBleu();
-        this.nbArcRougeSortantVersRouge();
-        return ((this.nbArcRougeSortantVersBleu * 1000) + this.nbArcBleuSortantVersBleu)
-                - ((this.nbArcBleuSortantVersRouge * 1000) + this.nbArcRougeSortantVersRouge);
+        return ((this.nOutgoingRedEdgesToBlue()*trafficNeighbors.size()) + this.nOutgoingBlueEdgesToBlue())
+                - ((this.nOutgoingBlueEdgesToRed()*trafficNeighbors.size()) + this.nOutgoingRedEdgesToRed());
     }
 
-
-    public void nbArcBleuSortantVersRouge() {
-        nbArcBleuSortantVersRouge = 0;
+    public int nOutgoingBlueEdgesToRed() {
+        int res = 0;
         for (TrafficNeighbor t : trafficNeighbors) {
             if (t.getEdge().getColor() == ColorBR.BLUE) {
-                if (t.getVertex().getColor() == ColorBR.RED) {
-                    nbArcBleuSortantVersRouge++;
-                }
+                if (t.getVertex().getColor() == ColorBR.RED)
+                    res++;
             }
         }
+        return res;
     }
 
-    public void nbArcRougeSortantVersBleu() {
-        nbArcRougeSortantVersBleu = 0;
+    public int nOutgoingRedEdgesToBlue() {
+        int res = 0;
         for (TrafficNeighbor t : trafficNeighbors) {
             if (t.getEdge().getColor() == ColorBR.RED) {
-                if (t.getVertex().getColor() == ColorBR.BLUE) {
-                    nbArcRougeSortantVersBleu++;
-                }
+                if (t.getVertex().getColor() == ColorBR.BLUE)
+                    res++;
             }
-
         }
+        return res;
     }
 
-    public void nbArcRougeSortantVersRouge() {
-        nbArcRougeSortantVersRouge = 0;
+    public int nOutgoingRedEdgesToRed() {
+        int res = 0;
         for (TrafficNeighbor t : trafficNeighbors) {
             if (t.getEdge().getColor() == ColorBR.RED) {
-                if (t.getVertex().getColor() == ColorBR.RED) {
-                    nbArcRougeSortantVersRouge++;
-                }
+                if (t.getVertex().getColor() == ColorBR.RED)
+                    res++;
             }
         }
+        return res;
     }
 
-    public void nbArcBleuSortantVersBleu() {
-        nbArcBleuSortantVersBleu = 0;
+    public int nOutgoingBlueEdgesToBlue() {
+        int res = 0;
         for (TrafficNeighbor t : trafficNeighbors) {
             if (t.getEdge().getColor() == ColorBR.BLUE) {
-                if (t.getVertex().getColor() == ColorBR.BLUE) {
-                    nbArcBleuSortantVersBleu++;
-                }
-            }
-
-        }
-    }
-
-    public void nbArcRougeSortant() {
-        nbArcRougeSortant = 0;
-        for(TrafficNeighbor t : trafficNeighbors){
-            if(t.getEdge().getColor() == ColorBR.RED){
-                nbArcRougeSortant++;
+                if (t.getVertex().getColor() == ColorBR.BLUE)
+                    res++;
             }
         }
-    }
-
-    public void addNeighbor(Vertex vertex) {
-        this.neighbors.add(vertex);
+        return res;
     }
 
     public void setColor(ColorBR color) {
@@ -113,17 +78,21 @@ public class Vertex {
         return color;
     }
 
-    public List<Vertex> getNeighbors() {
-        return neighbors;
+    public List<TrafficNeighbor> getTrafficNeighbors() {
+        return trafficNeighbors;
+    }
+
+    public void addTrafficNeighbor(TrafficNeighbor tn) {
+        this.trafficNeighbors.add(tn);
+    }
+
+    public void removeTrafficNeighborByVertex(Vertex v) {
+        trafficNeighbors.removeIf(t -> t.getVertex() == v);
     }
 
     @Override
     public String toString() {
         return id + color.toString();
-    }
-
-    public int nbArcSortant() {
-        return trafficNeighbors.size();
     }
 
     @Override
@@ -133,11 +102,11 @@ public class Vertex {
         Vertex vertex = (Vertex) o;
         return id == vertex.id &&
                 color == vertex.color &&
-                neighbors.equals(vertex.neighbors);
+                trafficNeighbors.equals(vertex.trafficNeighbors);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(color, neighbors, id);
+        return Objects.hash(color, trafficNeighbors, id);
     }
 }

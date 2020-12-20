@@ -12,7 +12,7 @@ public class Utility {
     public static Vertex getFirstRedVertex(Graph graph){
         for (Vertex v : graph.getVertices()){
             if(v.getColor() ==  ColorBR.RED){
-                v.nbArcBleuSortantVersRouge();
+                v.nOutgoingBlueEdgesToRed();
                 return v;
             }
         }
