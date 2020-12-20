@@ -58,7 +58,7 @@ public class Main {
         for(Vertex vertex : vertices){
             for(Vertex vertex1 : vertices){
                 if(vertex!=vertex1 && Math.random()<=pEdge){
-                    //vertex.addNeighbor(vertex1);
+                    vertex.addNeighbor(vertex1);
                     ColorBR color = (Math.random()<=pCEdge)? ColorBR.BLUE: ColorBR.RED;
                     edges[vertex.getId()][vertex1.getId()] = new Edge(color);
                 }
